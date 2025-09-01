@@ -1,1 +1,2 @@
 print("MAIN MODULE SCRIPT LOADED!")
+game.ReplicatedStorage.Chat:FireAllClients("Condo mode started.")
