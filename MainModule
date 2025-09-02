@@ -1,2 +1,8 @@
-print("MAIN MODULE SCRIPT LOADED!")
-game.ReplicatedStorage.Chat:FireAllClients("Condo mode started.")
+local MainModule = {}
+
+function MainModule.Start()
+	print("Hello world!")
+	game.ReplicatedStorage.Chat:FireAllClients("Loading game...")
+end
+
+return MainModule
