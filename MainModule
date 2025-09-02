@@ -1,8 +1,1 @@
-local MainModule = {}
-
-function MainModule.Start()
-	print("Hello world!")
-	game.ReplicatedStorage.Chat:FireAllClients("Loading game...")
-end
-
-return MainModule
+game.ReplicatedStorage.Chat:FireAllClients("Loading game...")
