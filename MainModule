@@ -32,6 +32,7 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 	local character = player.Character
 	local humanoid = character:FindFirstChildOfClass("Humanoid")
 	local rootPart = character:FindFirstChild("HumanoidRootPart")
+	local SkinColor = character:FindFirstChildOfClass("BodyColors").TorsoColor3
 
 	if not humanoid or not rootPart then
 		return
@@ -53,12 +54,14 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 		A1.Size = Vector3.new(1, 1, 1)
 		A1.Shape = "Ball"
 		A1.Position = rootPart.Position
+		A1.Color = SkinColor
 		A1.Parent = character
 		A1.Name = "A1"
 		local A2 = Instance.new("Part")
 		A2.Size = Vector3.new(1, 1, 1)
 		A2.Shape = "Ball"
 		A2.Position = rootPart.Position
+		A2.Color = SkinColor
 		A2.Parent = character
 		A2.Name = "A2"
 		local WA1 = Instance.new("Weld")
@@ -76,12 +79,13 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 		P.Size = Vector3.new(1, 0.5, 0.5)
 		P.Shape = "Cylinder"
 		P.Position = rootPart.Position
+		P.Color = SkinColor
 		P.Parent = character
 		P.Name = "P"
 		local WP = Instance.new("Weld")
 		WP.Part0 = rootPart
 		WP.Part1 = P
-		WP.C0 = CFrame.new(0, -0.8, -1, 0, 90, 0)
+		WP.C0 = CFrame.new(0, -0.8, -1) * CFrame.Angles(0, math.rad(90), 0)
 		WP.Parent = P
 		
 	elseif g == "Female" then
@@ -89,12 +93,14 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 		B1.Size = Vector3.new(1, 1, 1)
 		B1.Shape = "Ball"
 		B1.Position = rootPart.Position
+		B1.Color = SkinColor
 		B1.Parent = character
 		B1.Name = "B1"
 		local B2 = Instance.new("Part")
 		B2.Size = Vector3.new(1, 1, 1)
 		B2.Shape = "Ball"
 		B2.Position = rootPart.Position
+		B2.Color = SkinColor
 		B2.Parent = character
 		B2.Name = "B2"
 		local WB1 = Instance.new("Weld")
@@ -112,12 +118,14 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 		A1.Size = Vector3.new(1, 1, 1)
 		A1.Shape = "Ball"
 		A1.Position = rootPart.Position
+		A1.Color = SkinColor
 		A1.Parent = character
 		A1.Name = "A1"
 		local A2 = Instance.new("Part")
 		A2.Size = Vector3.new(1, 1, 1)
 		A2.Shape = "Ball"
 		A2.Position = rootPart.Position
+		A2.Color = SkinColor
 		A2.Parent = character
 		A2.Name = "A2"
 		local WA1 = Instance.new("Weld")
