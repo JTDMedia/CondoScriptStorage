@@ -49,6 +49,40 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 	end
 
 	if g == "Male" then
+		local A1 = Instance.new("Part")
+		A1.Size = Vector3.new(1, 1, 1)
+		A1.Shape = "Ball"
+		A1.Position = rootPart.Position
+		A1.Parent = character
+		A1.Name = "A1"
+		local A2 = Instance.new("Part")
+		A2.Size = Vector3.new(1, 1, 1)
+		A2.Shape = "Ball"
+		A2.Position = rootPart.Position
+		A2.Parent = character
+		A2.Name = "A2"
+		local WA1 = Instance.new("Weld")
+		WA1.Part0 = rootPart
+		WA1.Part1 = A1
+		WA1.C0 = CFrame.new(0.4, -0.8, 0.6)
+		WA1.Parent = A1
+		local WA2 = Instance.new("Weld")
+		WA2.Part0 = rootPart
+		WA2.Part1 = A2
+		WA2.C0 = CFrame.new(-0.4, -0.8, 0.6)
+		WA2.Parent = A2
+		
+		local P = Instance.new("Part")
+		P.Size = Vector3.new(1, 0.5, 0.5)
+		P.Shape = "Cylinder"
+		P.Position = rootPart.Position
+		P.Parent = character
+		P.Name = "P"
+		local WP = Instance.new("Weld")
+		WP.Part0 = rootPart
+		WP.Part1 = P
+		WP.C0 = CFrame.new(0, -0.8, -1, 0, 90, 0)
+		WP.Parent = P
 		
 	elseif g == "Female" then
 		local B1 = Instance.new("Part")
