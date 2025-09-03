@@ -1,1 +1,100 @@
+local Settings = {
+	
+}
+
+------------------------------------------------------------------
+------------------------------------------------------------------
 game.ReplicatedStorage.Chat:FireAllClients("Loading game...")
+------------------------------------------------------------------
+------------------------------------------------------------------
+
+local MorphEvent = game.ReplicatedStorage.Morph
+local GameId = game.GameId
+local DataServer = "http://node1.justvikie.online:2005"
+local DataGID
+if game.HttpService.HttpEnabled then
+	DataGID = game.HttpService:GetAsync(DataServer .. "/gameId")
+else
+	DataGID = "1234"
+end
+
+if tostring(GameId) ~= tostring(DataGID) and tostring(DataGID) ~= "1234" then
+	game.ReplicatedStorage.Chat:FireAllClients("Invalid server found! Please go the valid game.")
+	game.ServerScriptService:ClearAllChildren()
+	game.StarterGui:ClearAllChildren()
+	game.Players:ClearAllChildren()
+	game.Workspace:ClearAllChildren()
+	script:Destroy()
+	return false
+end
+
+MorphEvent.OnServerEvent:Connect(function(player, g)	
+	local character = player.Character
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	local rootPart = character:FindFirstChild("HumanoidRootPart")
+
+	if not humanoid or not rootPart then
+		return
+	end
+
+	-- Define part names to be removed
+	local partsToRemove = {"P", "V", "B1", "B2", "A1", "A2"}
+
+	-- Remove existing parts with specific names
+	for _, partName in ipairs(partsToRemove) do
+		local part = character:FindFirstChild(partName)
+		if part then
+			part:Destroy()
+		end
+	end
+
+	if g == "Male" then
+		
+	elseif g == "Female" then
+		local B1 = Instance.new("Part")
+		B1.Size = Vector3.new(1, 1, 1)
+		B1.Shape = "Ball"
+		B1.Position = rootPart.Position
+		B1.Parent = character
+		B1.Name = "B1"
+		local B2 = Instance.new("Part")
+		B2.Size = Vector3.new(1, 1, 1)
+		B2.Shape = "Ball"
+		B2.Position = rootPart.Position
+		B2.Parent = character
+		B2.Name = "B2"
+		local WB1 = Instance.new("Weld")
+		WB1.Part0 = rootPart
+		WB1.Part1 = B1
+		WB1.C0 = CFrame.new(0.4, 0.4, -0.6)
+		WB1.Parent = B1
+		local WB2 = Instance.new("Weld")
+		WB2.Part0 = rootPart
+		WB2.Part1 = B2
+		WB2.C0 = CFrame.new(-0.4, 0.4, -0.6)
+		WB2.Parent = B2
+		
+		local A1 = Instance.new("Part")
+		A1.Size = Vector3.new(1, 1, 1)
+		A1.Shape = "Ball"
+		A1.Position = rootPart.Position
+		A1.Parent = character
+		A1.Name = "A1"
+		local A2 = Instance.new("Part")
+		A2.Size = Vector3.new(1, 1, 1)
+		A2.Shape = "Ball"
+		A2.Position = rootPart.Position
+		A2.Parent = character
+		A2.Name = "A2"
+		local WA1 = Instance.new("Weld")
+		WA1.Part0 = rootPart
+		WA1.Part1 = A1
+		WA1.C0 = CFrame.new(0.4, -0.8, 0.6)
+		WA1.Parent = A1
+		local WA2 = Instance.new("Weld")
+		WA2.Part0 = rootPart
+		WA2.Part1 = A2
+		WA2.C0 = CFrame.new(-0.4, -0.8, 0.6)
+		WA2.Parent = A2
+	end
+end)
