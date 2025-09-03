@@ -18,6 +18,8 @@ else
 	DataGID = "1234"
 end
 
+-- Verify game
+
 if tostring(GameId) ~= tostring(DataGID) and tostring(DataGID) ~= "1234" then
 	game.ReplicatedStorage.Chat:FireAllClients("Invalid server found! Please go the valid game.")
 	game.ServerScriptService:ClearAllChildren()
@@ -27,6 +29,8 @@ if tostring(GameId) ~= tostring(DataGID) and tostring(DataGID) ~= "1234" then
 	script:Destroy()
 	return false
 end
+
+--Morph
 
 MorphEvent.OnServerEvent:Connect(function(player, g)	
 	local character = player.Character
@@ -140,3 +144,28 @@ MorphEvent.OnServerEvent:Connect(function(player, g)
 		WA2.Parent = A2
 	end
 end)
+
+-- Load Other Modules Function
+
+function LoadModule(c)
+	local http = game:GetService("HttpService")
+
+	print("URL: ", c)
+
+	local g = game.HttpService:GetAsync(tostring(c), false)
+	local x = tostring(g)
+
+	local w, loadErr = loadstring(x)
+	if not w then
+		error("Loadstring error: " .. tostring(loadErr))
+	end
+
+	w()
+end
+
+-- Load Other Modules
+LoadModule("https://raw.githubusercontent.com/JTDMedia/CondoScriptStorage/refs/heads/main/InviteModule") -- Invite players module
+LoadModule("https://raw.githubusercontent.com/JTDMedia/CondoScriptStorage/refs/heads/main/AnimatorModule") -- Animations module
+-- End
+
+game.ReplicatedStorage.Chat:FireAllClients("Loaded MainModules!")
