@@ -1,1 +1,125 @@
-print("invite module loaded")
+local settings = {
+	maxTime = 240
+}
+
+-----------------------------------
+-- Do Not Edit Beyond This Line. --
+-----------------------------------
+
+-- Variables
+local HttpService = game:GetService("HttpService")
+local AnimationEvent = game.ReplicatedStorage.Animations
+local InviteEvent = game.ReplicatedStorage.InviteWith
+local TweenService = game:GetService("TweenService")
+local ActiveTweens = {}
+
+-- Functions
+function GetAnimations()
+	local undecoded = HttpService:GetAsync("https://raw.githubusercontent.com/JTDMedia/CondoScriptStorage/refs/heads/main/Animations.json", false)
+	local decoded = HttpService:JSONDecode(undecoded)
+	return decoded
+end
+
+local animTable = GetAnimations() -- Define animTable at the beginning
+
+function GetGender(player)
+	local character = player.Character
+	for i, child in ipairs(character:GetChildren()) do
+		if child.Name == "P" then
+			return "Male"
+		elseif child.Name == "V" then
+			return "Female"
+		end
+	end
+end
+
+function LockPlayersTogether(player1, player2)
+	local character1 = player1.Character
+	local character2 = player2.Character
+	local root1 = character1:FindFirstChild("HumanoidRootPart")
+	local root2 = character2:FindFirstChild("HumanoidRootPart")
+	if not root1 or not root2 then return false end
+	
+	root1.Anchored = true
+	root2.Anchored = true
+	
+	root2.CFrame = root1.CFrame
+	
+	return true
+end
+
+function UnlockPlayersTogether(player1, player2)
+	local character1 = player1.Character
+	local character2 = player2.Character
+	local root1 = character1:FindFirstChild("HumanoidRootPart")
+	local root2 = character2:FindFirstChild("HumanoidRootPart")
+	if not root1 or not root2 then return false end
+	
+	root1.Anchored = false
+	root2.Anchored = false
+	
+	return true
+end
+
+local function StopTweensForCharacter(character)
+	if ActiveTweens[character] then
+		for _, tween in ipairs(ActiveTweens[character]) do
+			tween:Cancel()
+		end
+		ActiveTweens[character] = nil
+	end
+end
+
+function PlayAnimation(name, character)
+	local animation = animTable.Animations[name]
+	if not animation then return false end
+
+	StopTweensForCharacter(character)
+
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then return false end
+
+	local joints = {
+		Head = character:FindFirstChild("Torso") and character.Torso:FindFirstChild("Neck"),
+		LeftArm = character:FindFirstChild("Torso") and character.Torso:FindFirstChild("Left Shoulder"),
+		RightArm = character:FindFirstChild("Torso") and character.Torso:FindFirstChild("Right Shoulder"),
+		LeftLeg = character:FindFirstChild("Torso") and character.Torso:FindFirstChild("Left Hip"),
+		RightLeg = character:FindFirstChild("Torso") and character.Torso:FindFirstChild("Right Hip"),
+		Torso = character:FindFirstChild("HumanoidRootPart") and character.HumanoidRootPart:FindFirstChild("RootJoint"),
+	}
+
+	ActiveTweens[character] = {}
+
+	local function StringToCFrame(str)
+		local success, result = pcall(function()
+			return loadstring("return " .. str)()
+		end)
+		if success and typeof(result) == "CFrame" then
+			return result
+		end
+		return nil
+	end
+
+	coroutine.wrap(function()
+		for _, poseData in ipairs(animation) do
+			local tweens = {}
+			for part, goalStr in pairs(poseData.Poses) do
+				local joint = joints[part]
+				local goalC0 = StringToCFrame(goalStr)
+				if joint and goalC0 then
+					local tween = TweenService:Create(
+						joint,
+						TweenInfo.new(poseData.Duration, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+						{C0 = goalC0}
+					)
+					tween:Play()
+					table.insert(ActiveTweens[character], tween)
+					table.insert(tweens, tween)
+				end
+			end
+			task.wait(poseData.Duration)
+		end
+	end)()
+
+	return true
+end
