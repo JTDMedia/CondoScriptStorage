@@ -1,6 +1,32 @@
 {
   "ReleaseDate": "4 September 2025",
-  "Animations": [
-    
-  ]
+  "Animations": {
+    "Wave": [
+      {
+        "Duration": 0.5,
+        "Poses": {
+          "RightArm": "CFrame.new(0,-0.5,0) * CFrame.Angles(0,0,90)",
+          "LeftArm": "CFrame.new(0,-0.5,0)"
+        }
+      },
+      {
+        "Duration": 0.5,
+        "Poses": {
+          "RightArm": "CFrame.new(0,-0.5,0) * CFrame.Angles(0,0,-90)",
+          "LeftArm": "CFrame.new(0,-0.5,0)"
+        }
+      }
+    ],
+    "Idle": [
+      {
+        "Duration": 1.0,
+        "Poses": {
+          "RightArm": "CFrame.new(0,-0.5,0)",
+          "LeftArm": "CFrame.new(0,-0.5,0)",
+          "RightLeg": "CFrame.new(0,-1,0)",
+          "LeftLeg": "CFrame.new(0,-1,0)"
+        }
+      }
+    ]
+  }
 }
