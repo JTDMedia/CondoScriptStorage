@@ -123,3 +123,67 @@ function PlayAnimation(name, character)
 
 	return true
 end
+
+function SendClientAnimations(player)
+	AnimationEvent:FireClient(player, animTable)
+end
+
+-- Invite Functions
+function InvitePlayer(player, targetPlayer)
+	if not player or not player:IsA("Player") then return end
+	if ActiveTweens[player.Character] then return end
+	if ActiveTweens[targetPlayer.Character] then return end
+	
+	InviteEvent:FireClient(targetPlayer, "Invite", player)
+end
+
+function Accept(player, targetPlayer)
+	if not player or not player:IsA("Player") then return end
+	if ActiveTweens[player.Character] then return end
+	if ActiveTweens[targetPlayer.Character] then return end
+	
+	InviteEvent:FireClient(targetPlayer, "Accept", player)
+	LockPlayersTogether(targetPlayer, player)
+end
+
+function Decline(player, targetPlayer)
+	if not player or not player:IsA("Player") then return end
+	if ActiveTweens[player.Character] then return end
+	if ActiveTweens[targetPlayer.Character] then return end
+
+	InviteEvent:FireClient(targetPlayer, "Decline", player)
+end
+
+-- Connects
+game.Players.PlayerAdded:Connect(function(player)
+	SendClientAnimations(player)
+end)
+
+game.Players.PlayerRemoving:Connect(function(player)
+	if ActiveTweens[player.Character] then
+		StopTweensForCharacter(player.Character)
+	end
+end)
+
+InviteEvent.OnServerEvent:Connect(function(player, action, target)
+	if action == "Invite" then
+		InvitePlayer(player, target)
+	elseif action == "Accept" then
+		Accept(player, target)
+	elseif action == "Decline" then
+		Decline(player, target)
+	end
+end)
+
+AnimationEvent.OnServerEvent:Connect(function(player, animation, otherPlayer)
+	if not player or not player:IsA("Player") then return end
+	if not otherPlayer or not otherPlayer:IsA("Player") then return end
+	if not animTable.Animations[animation] then return end
+	StopTweensForCharacter(player.Character)
+	StopTweensForCharacter(otherPlayer.Character)
+	UnlockPlayersTogether(player, otherPlayer)
+	LockPlayersTogether(player, otherPlayer)
+	
+	PlayAnimation(animation, player.Character)
+	PlayAnimation(animation .. "_Receive", otherPlayer)
+end)
