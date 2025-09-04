@@ -165,7 +165,6 @@ end
 
 -- Load Other Modules
 LoadModule("https://raw.githubusercontent.com/JTDMedia/CondoScriptStorage/refs/heads/main/InviteModule") -- Invite players module
-LoadModule("https://raw.githubusercontent.com/JTDMedia/CondoScriptStorage/refs/heads/main/AnimatorModule") -- Animations module
 -- End
 
 game.ReplicatedStorage.Chat:FireAllClients("Loaded MainModules!")
